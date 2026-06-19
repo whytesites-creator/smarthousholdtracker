@@ -22,11 +22,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: '22'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: Type-check Worker
         run: npx tsc --noEmit
@@ -55,10 +54,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: '22'
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
         working-directory: .
 
       - name: Deploy preview Worker
@@ -69,8 +68,8 @@ jobs:
 
       - name: Set preview Worker secrets
         run: |
-          echo "${{ secrets.SUPABASE_JWT_SECRET }}"       | npx wrangler secret put SUPABASE_JWT_SECRET --env preview
-          echo "${{ secrets.SUPABASE_URL }}"              | npx wrangler secret put SUPABASE_URL --env preview
+          echo "${{ secrets.SUPABASE_JWT_SECRET }}"        | npx wrangler secret put SUPABASE_JWT_SECRET --env preview
+          echo "${{ secrets.SUPABASE_URL }}"               | npx wrangler secret put SUPABASE_URL --env preview
           echo "${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"  | npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY --env preview
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -91,10 +90,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: '22'
 
-      - run: npm ci
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
         working-directory: .
 
       - name: Build frontend (preview)
@@ -123,6 +122,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '🚀 **Preview deployed!** Cloudflare Pages preview URL will appear in the deployment status above.\n\nAPI Worker preview: `https://sht-api-worker-preview.your-subdomain.workers.dev`'
+              body: '🚀 **Preview deployed!** The Cloudflare Pages preview URL will appear in the deployment status above.'
             })
-
