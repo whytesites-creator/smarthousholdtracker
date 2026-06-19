@@ -1,0 +1,17 @@
+{
+  "name": "smarthousholdtracker",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=apps/web\" \"npm run dev --workspace=apps/api-worker\"",
+    "build": "npm run build --workspace=apps/web && npm run build --workspace=apps/api-worker",
+    "lint": "npm run lint --workspace=apps/web",
+    "typecheck": "npm run typecheck --workspace=apps/web && npm run typecheck --workspace=apps/api-worker",
+    "deploy:worker": "npm run deploy --workspace=apps/api-worker",
+    "migrate:remote": "npm run migrate:remote --workspace=apps/api-worker",
+    "migrate:local": "npm run migrate:local --workspace=apps/api-worker"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

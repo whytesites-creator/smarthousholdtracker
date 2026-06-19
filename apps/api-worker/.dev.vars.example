@@ -1,0 +1,21 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Cloudflare Worker — Local Dev Secrets
+#
+# Copy to .dev.vars (gitignored) for local `wrangler dev`.
+# In production these are set as Worker secrets via GitHub Actions.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Supabase JWT Secret (Dashboard → Project Settings → API → JWT Settings)
+SUPABASE_JWT_SECRET=your-supabase-jwt-secret-here
+
+# Supabase Project URL (Dashboard → Project Settings → API)
+SUPABASE_URL=https://your-project-ref.supabase.co
+
+# Supabase Service Role Key — grants full storage access (keep secret!)
+# Dashboard → Project Settings → API → service_role key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+
+# Local dev non-secret overrides
+ENVIRONMENT=development
+ALLOWED_ORIGINS=http://localhost:3000
+SUPABASE_STORAGE_BUCKET=household-documents
