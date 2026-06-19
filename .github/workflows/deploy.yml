@@ -45,18 +45,21 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
 
-      - name: Create Pages project (safe to run if already exists)
-        run: wrangler pages project create smarthousholdtracker --production-branch main || true
+      - name: Create Pages project if not exists
+        run: wrangler pages project create smarthousholdtracker --production-branch main 2>/dev/null || echo "Project already exists, skipping."
 
       - name: Deploy to Cloudflare Pages
         run: wrangler pages deploy apps/web/dist --project-name smarthousholdtracker --branch main
+        continue-on-error: false
 
       - name: Smoke test Worker
         run: |
+          sleep 10
           WORKER_URL="https://smarthousholdtracker.whytesites.workers.dev"
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$WORKER_URL/health")
           echo "Worker health: $STATUS"
           if [ "$STATUS" != "200" ]; then
-            echo "Health check failed"
+            echo "Health check failed with status $STATUS"
             exit 1
           fi
+          echo "✅ Worker is live and healthy"
