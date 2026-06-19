@@ -1,14 +1,14 @@
 import { authMiddleware } from './middleware/auth.middleware'
 import { syncProfile, getProfile, updateProfile } from './modules/auth/auth.handler'
 import {
-  getHouseholds,
-  createHousehold,
-  switchHousehold,
-  getHouseholdMembers,
-  updateMemberRole,
-  removeMember,
+  getHouseholds, createHousehold, switchHousehold,
+  getHouseholdMembers, updateMemberRole, removeMember,
 } from './modules/households/household.handler'
 import { createInvite, acceptInvite } from './modules/invites/invite.handler'
+import {
+  listExpenses, createExpense, updateExpense,
+  deleteExpense, getExpenseSummary,
+} from './modules/expenses/expense.handler'
 import { addCorsHeaders, errorResponse } from './utils/helpers'
 import type { Env } from './utils/helpers'
 
@@ -119,6 +119,23 @@ async function routeRequest(request: Request, env: Env, route: string): Promise<
   if (inviteAcceptMatch && method === 'POST') {
     const token = inviteAcceptMatch[1]
     return acceptInvite(request, env, context, token)
+  }
+
+  // ── Expenses ──────────────────────────────────────────────────────────────
+  if (method === 'GET' && route === '/expenses') {
+    return listExpenses(request, env, context)
+  }
+  if (method === 'GET' && route === '/expenses/summary') {
+    return getExpenseSummary(request, env, context)
+  }
+  if (method === 'POST' && route === '/expenses') {
+    return createExpense(request, env, context)
+  }
+  const expenseMatch = route.match(/^\/expenses\/([^/]+)$/)
+  if (expenseMatch) {
+    const expenseId = expenseMatch[1]
+    if (method === 'PATCH')  return updateExpense(request, env, context, expenseId)
+    if (method === 'DELETE') return deleteExpense(request, env, context, expenseId)
   }
 
   // ─── 404 fallback ─────────────────────────────────────────────────────────
