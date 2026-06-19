@@ -10,39 +10,35 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "sht-db"
-database_id = "7040f30d-b069-4b33-bc4c-9cb2fd972c21"   # replace after: wrangler d1 create sht-db
+database_id = "7040f30d-b069-4b33-bc4c-9cb2fd972c21"
 migrations_dir = "migrations"
 
-# ── R2 Storage (documents / invoices) ───────────────────────────────────────
-[[r2_buckets]]
-binding = "R2"
-bucket_name = "sht-documents-prod"
+# ── File Storage ─────────────────────────────────────────────────────────────
+# Using Supabase Storage (free tier, no credit card needed).
+# R2 is NOT used.
+#
+# Secrets injected via GitHub Actions (never commit values here):
+#   SUPABASE_JWT_SECRET      — verifies user tokens
+#   SUPABASE_URL             — your Supabase project URL
+#   SUPABASE_SERVICE_ROLE_KEY — for server-side storage operations
 
-# ── Environment variables (non-secret) ──────────────────────────────────────
+# ── Non-secret environment variables ─────────────────────────────────────────
 [vars]
 ENVIRONMENT = "production"
-# CORS origins that are allowed to call this worker.
-# Cloudflare Pages URL + any custom domain, comma-separated.
-ALLOWED_ORIGINS = "https://sht-web.pages.dev"
+ALLOWED_ORIGINS = "https://smarthousholdtracker.whytesites.workers.dev/"
+SUPABASE_STORAGE_BUCKET = "household-documents"
 
-# ── Secrets (never commit values here — set via GitHub Actions / wrangler) ──
-# wrangler secret put SUPABASE_JWT_SECRET
-# wrangler secret put SUPABASE_URL          (optional, for server-side calls)
-
-# ── Local dev overrides ──────────────────────────────────────────────────────
+# ── Preview environment ───────────────────────────────────────────────────────
 [env.preview]
 name = "sht-api-worker-preview"
+
 [env.preview.vars]
 ENVIRONMENT = "preview"
-ALLOWED_ORIGINS = "https://sht-web-preview.pages.dev,http://localhost:3000"
+ALLOWED_ORIGINS = "https://smarthousholdtracker.whytesites.workers.dev/,http://localhost:3000"
+SUPABASE_STORAGE_BUCKET = "household-documents"
 
 [[env.preview.d1_databases]]
 binding = "DB"
 database_name = "sht-db"
 database_id = "7040f30d-b069-4b33-bc4c-9cb2fd972c21"
 migrations_dir = "migrations"
-
-[[env.preview.r2_buckets]]
-binding = "R2"
-bucket_name = "sht-documents-preview"
-

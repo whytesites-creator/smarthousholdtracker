@@ -1,6 +1,9 @@
 export interface Env {
   DB: D1Database
-  R2: R2Bucket
+  // File storage: Supabase Storage (free tier, no credit card needed — R2 not used)
+  SUPABASE_URL: string
+  SUPABASE_SERVICE_ROLE_KEY: string
+  SUPABASE_STORAGE_BUCKET: string
   SUPABASE_JWT_SECRET: string
   ENVIRONMENT: string
   /** Comma-separated list of allowed CORS origins */

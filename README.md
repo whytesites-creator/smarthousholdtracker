@@ -60,10 +60,18 @@ database_id = "PASTE_YOUR_DATABASE_ID_HERE"   # ← replace this line
 ```
 Commit the change — this is the **only** file edit you need to make.
 
-#### 4c — Create R2 Bucket
+#### 4c — Create Supabase Storage Bucket (replaces R2 — free, no card needed)
 
-Go to **Cloudflare Dashboard → R2 → Create Bucket**
-- Name: `sht-documents-prod`
+1. Go to your Supabase project → **Storage** (left sidebar)
+2. Click **New bucket**
+   - Name: `household-documents`
+   - Toggle **Public bucket**: **OFF** (keep private — access via signed URLs)
+3. Click **Save**
+
+That's it. No credit card. No Cloudflare R2 needed.
+
+Also collect the **Service Role Key** from Supabase (needed in Step 5):
+- Go to **Project Settings → API → service_role** key → copy it
 
 #### 4d — Create Cloudflare Pages Project
 
@@ -86,8 +94,10 @@ Add all of these:
 |---|---|
 | `CLOUDFLARE_API_TOKEN` | Step 3 above |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard sidebar |
-| `SUPABASE_JWT_SECRET` | Supabase → Project Settings → API → JWT Secret |
-| `VITE_SUPABASE_URL` | Supabase → Project Settings → API → Project URL |
+| `SUPABASE_JWT_SECRET` | Supabase → Project Settings → API → JWT Settings |
+| `SUPABASE_URL` | Supabase → Project Settings → API → Project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API → service_role key |
+| `VITE_SUPABASE_URL` | Same as `SUPABASE_URL` above |
 | `VITE_SUPABASE_ANON_KEY` | Supabase → Project Settings → API → anon/public key |
 | `VITE_API_BASE_URL` | `https://sht-api-worker.<your-subdomain>.workers.dev` |
 
