@@ -1,0 +1,48 @@
+name = "sht-api-worker"
+main = "src/index.ts"
+compatibility_date = "2025-06-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ── Workers & Assets ────────────────────────────────────────────────────────
+# Keep the worker lean — no bundled assets here (frontend lives on Pages)
+
+# ── D1 Database ─────────────────────────────────────────────────────────────
+[[d1_databases]]
+binding = "DB"
+database_name = "sht-db"
+database_id = "YOUR_D1_DATABASE_ID"   # replace after: wrangler d1 create sht-db
+migrations_dir = "migrations"
+
+# ── R2 Storage (documents / invoices) ───────────────────────────────────────
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "sht-documents-prod"
+
+# ── Environment variables (non-secret) ──────────────────────────────────────
+[vars]
+ENVIRONMENT = "production"
+# CORS origins that are allowed to call this worker.
+# Cloudflare Pages URL + any custom domain, comma-separated.
+ALLOWED_ORIGINS = "https://sht-web.pages.dev"
+
+# ── Secrets (never commit values here — set via GitHub Actions / wrangler) ──
+# wrangler secret put SUPABASE_JWT_SECRET
+# wrangler secret put SUPABASE_URL          (optional, for server-side calls)
+
+# ── Local dev overrides ──────────────────────────────────────────────────────
+[env.preview]
+name = "sht-api-worker-preview"
+[env.preview.vars]
+ENVIRONMENT = "preview"
+ALLOWED_ORIGINS = "https://sht-web-preview.pages.dev,http://localhost:3000"
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "sht-db"
+database_id = "YOUR_D1_DATABASE_ID"
+migrations_dir = "migrations"
+
+[[env.preview.r2_buckets]]
+binding = "R2"
+bucket_name = "sht-documents-preview"
+
