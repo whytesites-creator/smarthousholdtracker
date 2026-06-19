@@ -10,7 +10,7 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "sht-db"
-database_id = "YOUR_D1_DATABASE_ID"   # replace after: wrangler d1 create sht-db
+database_id = "7040f30d-b069-4b33-bc4c-9cb2fd972c21"   # replace after: wrangler d1 create sht-db
 migrations_dir = "migrations"
 
 # ── R2 Storage (documents / invoices) ───────────────────────────────────────
@@ -39,7 +39,7 @@ ALLOWED_ORIGINS = "https://sht-web-preview.pages.dev,http://localhost:3000"
 [[env.preview.d1_databases]]
 binding = "DB"
 database_name = "sht-db"
-database_id = "YOUR_D1_DATABASE_ID"
+database_id = "7040f30d-b069-4b33-bc4c-9cb2fd972c21"
 migrations_dir = "migrations"
 
 [[env.preview.r2_buckets]]
