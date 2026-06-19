@@ -1,4 +1,4 @@
-name = "sht-api-worker"
+name = "smarthousholdtracker"
 main = "src/index.ts"
 compatibility_date = "2025-06-01"
 compatibility_flags = ["nodejs_compat"]
@@ -25,16 +25,18 @@ migrations_dir = "migrations"
 # ── Non-secret environment variables ─────────────────────────────────────────
 [vars]
 ENVIRONMENT = "production"
-ALLOWED_ORIGINS = "https://smarthousholdtracker.whytesites.workers.dev/"
+# ALLOWED_ORIGINS = frontend Pages URL (NOT the worker URL)
+# Update this once you know your Pages URL after first deploy
+ALLOWED_ORIGINS = "https://sht-web.pages.dev"
 SUPABASE_STORAGE_BUCKET = "household-documents"
 
 # ── Preview environment ───────────────────────────────────────────────────────
 [env.preview]
-name = "sht-api-worker-preview"
+name = "smarthousholdtracker-preview"
 
 [env.preview.vars]
 ENVIRONMENT = "preview"
-ALLOWED_ORIGINS = "https://smarthousholdtracker.whytesites.workers.dev/,http://localhost:3000"
+ALLOWED_ORIGINS = "https://sht-web.pages.dev,http://localhost:3000"
 SUPABASE_STORAGE_BUCKET = "household-documents"
 
 [[env.preview.d1_databases]]
