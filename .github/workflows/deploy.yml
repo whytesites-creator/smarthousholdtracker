@@ -13,10 +13,10 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
 
@@ -50,6 +50,11 @@ jobs:
 
       - name: Smoke test Worker
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ secrets.VITE_API_BASE_URL }}/health")
+          WORKER_URL="https://smarthousholdtracker.whytesites.workers.dev"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$WORKER_URL/health")
+          echo "Worker URL: $WORKER_URL"
           echo "Worker health: $STATUS"
-          test "$STATUS" = "200"
+          if [ "$STATUS" != "200" ]; then
+            echo "Health check failed"
+            exit 1
+          fi
