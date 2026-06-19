@@ -1,12 +1,15 @@
 import axios from 'axios'
 import { supabase } from './supabase'
 
+const baseURL = import.meta.env.VITE_API_BASE_URL
+  ? `${import.meta.env.VITE_API_BASE_URL}/api/v1`
+  : '/api/v1'
+
 export const apiClient = axios.create({
-  baseURL: '/api/v1',
+  baseURL,
   headers: { 'Content-Type': 'application/json' },
 })
 
-// Attach bearer token from Supabase session on every request
 apiClient.interceptors.request.use(async (config) => {
   const { data } = await supabase.auth.getSession()
   const token = data.session?.access_token
@@ -16,7 +19,6 @@ apiClient.interceptors.request.use(async (config) => {
   return config
 })
 
-// Global response error handler
 apiClient.interceptors.response.use(
   (res) => res,
   (error) => {
@@ -27,4 +29,3 @@ apiClient.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
