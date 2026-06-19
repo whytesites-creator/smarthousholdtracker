@@ -13,10 +13,10 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
 
@@ -45,6 +45,9 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
 
+      - name: Create Pages project (safe to run if already exists)
+        run: wrangler pages project create smarthousholdtracker --production-branch main || true
+
       - name: Deploy to Cloudflare Pages
         run: wrangler pages deploy apps/web/dist --project-name smarthousholdtracker --branch main
 
@@ -52,7 +55,6 @@ jobs:
         run: |
           WORKER_URL="https://smarthousholdtracker.whytesites.workers.dev"
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$WORKER_URL/health")
-          echo "Worker URL: $WORKER_URL"
           echo "Worker health: $STATUS"
           if [ "$STATUS" != "200" ]; then
             echo "Health check failed"
