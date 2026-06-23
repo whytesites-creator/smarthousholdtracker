@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import { getExpenseSummary } from '@/features/expenses/services/expense.service'
 import { getInventorySummary } from '@/features/inventory/services/inventory.service'
 import { getBillsSummary } from '@/features/bills/services/bills.service'
+import { listVehicles } from '@/features/vehicles/services/vehicles.service'
+import { listReminders } from '@/features/health/services/health.service'
 import {
   IndianRupee, ShoppingBasket, Flame, Droplets, FileText,
   Car, Wrench, HeartPulse, FolderLock, Bell, TrendingUp,
@@ -200,6 +202,30 @@ export function DashboardPage() {
     enabled: !!hId,
   })
 
+  const { data: vehicles = [] } = useQuery({
+    queryKey: ['vehicles', hId],
+    queryFn: () => listVehicles(hId),
+    enabled: !!hId,
+  })
+
+  const { data: healthReminders = [] } = useQuery({
+    queryKey: ['health-reminders', hId, 'pending'],
+    queryFn: () => listReminders(hId, 'pending'),
+    enabled: !!hId,
+  })
+
+  // Count vehicles with insurance or PUC expiring in next 30 days
+  const in30 = new Date(Date.now() + 30 * 86400000)
+  const vehicleAlerts = vehicles.filter(v => {
+    const insurDays = v.insurance_expiry ? Math.ceil((new Date(v.insurance_expiry).getTime() - Date.now()) / 86400000) : null
+    const pucDays   = v.puc_expiry       ? Math.ceil((new Date(v.puc_expiry).getTime()       - Date.now()) / 86400000) : null
+    return (insurDays !== null && insurDays <= 30) || (pucDays !== null && pucDays <= 30)
+  }).length
+
+  // Count overdue + due soon health reminders
+  const overdueHealth  = healthReminders.filter(r => new Date(r.due_date) < new Date()).length
+  const totalReminders = healthReminders.length
+
   const totalExpenses  = summary?.total ?? 0
   const lowStockCount  = invSummary?.low_stock_count ?? 0
   const billsDue       = (billsSummary?.due_in_30_days ?? 0) + (billsSummary?.overdue ?? 0)
@@ -230,10 +256,10 @@ export function DashboardPage() {
 
         {/* Setup progress bar */}
         <div className="mt-4 bg-white/20 rounded-full h-1.5">
-          <div className="bg-white h-1.5 rounded-full" style={{ width: '10%' }} />
+          <div className="bg-white h-1.5 rounded-full" style={{ width: '100%' }} />
         </div>
         <p className="text-xs mt-1.5 opacity-75">
-          Household setup: 10% complete — start adding your data below
+          All 12 modules active — start adding your data below 🚀
         </p>
       </div>
 
@@ -265,13 +291,25 @@ export function DashboardPage() {
             color="bg-purple-500"
           />
           <StatCard
-            icon={Bell}
-            label="Reminders"
-            value="0"
-            sub="No pending alerts"
-            color="bg-rose-500"
+            icon={HeartPulse}
+            label="Health"
+            value={String(totalReminders)}
+            sub={overdueHealth > 0 ? `${overdueHealth} overdue` : totalReminders > 0 ? 'Pending reminders' : 'All clear'}
+            color={overdueHealth > 0 ? 'bg-red-500' : 'bg-rose-500'}
           />
         </div>
+        {vehicleAlerts > 0 && (
+          <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-xl p-3 flex items-center gap-3">
+            <Car className="w-5 h-5 text-amber-600 shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-amber-900 dark:text-amber-100">
+                {vehicleAlerts} vehicle{vehicleAlerts > 1 ? 's' : ''} with expiring insurance / PUC
+              </p>
+              <p className="text-xs text-amber-700 dark:text-amber-300">Expires within 30 days</p>
+            </div>
+            <button onClick={() => navigate('/vehicles')} className="text-xs font-medium text-amber-700 dark:text-amber-300 underline shrink-0">View →</button>
+          </div>
+        )}
       </div>
 
       {/* Getting started banner (shown until data exists) */}
