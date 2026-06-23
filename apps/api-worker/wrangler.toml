@@ -30,6 +30,23 @@ ENVIRONMENT = "production"
 ALLOWED_ORIGINS = "https://sht-web.pages.dev"
 SUPABASE_STORAGE_BUCKET = "household-documents"
 
+# ── Local development environment ────────────────────────────────────────────
+# Used when running: wrangler dev  (default — no --env flag needed)
+# Secrets come from .dev.vars  (copy from .dev.vars.example and fill in values)
+[env.local]
+name = "smarthousholdtracker-local"
+
+[env.local.vars]
+ENVIRONMENT = "development"
+ALLOWED_ORIGINS = "http://localhost:3000"
+SUPABASE_STORAGE_BUCKET = "household-documents"
+
+[[env.local.d1_databases]]
+binding = "DB"
+database_name = "sht-db"
+database_id = "7040f30d-b069-4b33-bc4c-9cb2fd972c21"
+migrations_dir = "migrations"
+
 # ── Preview environment ───────────────────────────────────────────────────────
 [env.preview]
 name = "smarthousholdtracker-preview"

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "wrangler dev --env local",
     "build": "wrangler deploy --dry-run",
     "typecheck": "tsc --noEmit",
     "deploy": "wrangler deploy",

@@ -2,7 +2,32 @@
 
 A mobile-first household management app for Indian families — built on Cloudflare's serverless stack with Supabase Auth.
 
-**Stack:** React + TypeScript · Cloudflare Pages · Cloudflare Workers · Cloudflare D1 · Cloudflare R2 · Supabase Auth
+**Stack:** React + TypeScript · Cloudflare Pages · Cloudflare Workers · Cloudflare D1 · Supabase Auth
+
+---
+
+## ⚡ Run Locally (5 minutes)
+
+> Full guide → **[docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md)**
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Copy env templates
+cp apps/web/.env.example          apps/web/.env.local
+cp apps/api-worker/.dev.vars.example  apps/api-worker/.dev.vars
+
+# 3. Fill in Supabase keys in both files (see docs/LOCAL_SETUP.md)
+
+# 4. Create local database
+npm run migrate:local
+
+# 5. Start
+npm run dev
+#   Frontend → http://localhost:3000
+#   Worker   → http://localhost:8787
+```
 
 ---
 
@@ -170,17 +195,16 @@ smarthousholdtracker/
 
 ---
 
-## 🛠 Local Development (Optional)
+## 🛠 Local Development
+
+Full step-by-step guide with troubleshooting: **[docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md)**
 
 ```bash
-# 1. Install
 npm install
-
-# 2. Copy and fill secrets
 cp apps/web/.env.example apps/web/.env.local
 cp apps/api-worker/.dev.vars.example apps/api-worker/.dev.vars
-
-# 3. Start both dev servers
+# fill in Supabase keys in both files
+npm run migrate:local
 npm run dev
 #   Frontend: http://localhost:3000
 #   Worker:   http://localhost:8787
