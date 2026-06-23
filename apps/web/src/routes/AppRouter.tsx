@@ -1,98 +1,68 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import {
-  IndianRupee, ShoppingBasket, Flame, Droplets,
-  FileText, Car, Wrench, HeartPulse, FolderLock, Bell,
-} from 'lucide-react'
-import { LoginPage } from '@/features/auth/components/LoginPage'
-import { RegisterPage } from '@/features/auth/components/RegisterPage'
-import { ForgotPasswordPage } from '@/features/auth/components/ForgotPasswordPage'
-import { ResetPasswordPage } from '@/features/auth/components/ResetPasswordPage'
-import { AcceptInvitePage } from '@/features/auth/components/AcceptInvitePage'
-import { ProtectedRoute } from './ProtectedRoute'
-import { ProfilePage } from '@/features/auth/components/ProfilePage'
-import { ChangePasswordPage } from '@/features/auth/components/ChangePasswordPage'
-import { MemberManagementPage } from '@/features/auth/components/MemberManagementPage'
-import { AppShell } from '@/components/layout/AppShell'
-import { ComingSoonPage } from '@/components/layout/ComingSoonPage'
-import { DashboardPage } from '@/features/dashboard/DashboardPage'
-import { ExpensesPage } from '@/features/expenses/components/ExpensesPage'
+import { LoginPage }             from '@/features/auth/components/LoginPage'
+import { RegisterPage }          from '@/features/auth/components/RegisterPage'
+import { ForgotPasswordPage }    from '@/features/auth/components/ForgotPasswordPage'
+import { ResetPasswordPage }     from '@/features/auth/components/ResetPasswordPage'
+import { AcceptInvitePage }      from '@/features/auth/components/AcceptInvitePage'
+import { ProtectedRoute }        from './ProtectedRoute'
+import { ProfilePage }           from '@/features/auth/components/ProfilePage'
+import { ChangePasswordPage }    from '@/features/auth/components/ChangePasswordPage'
+import { MemberManagementPage }  from '@/features/auth/components/MemberManagementPage'
+import { AppShell }              from '@/components/layout/AppShell'
+import { DashboardPage }         from '@/features/dashboard/DashboardPage'
+import { ExpensesPage }          from '@/features/expenses/components/ExpensesPage'
+import { InventoryPage }         from '@/features/inventory/components/InventoryPage'
+import { GasPage }               from '@/features/gas/components/GasPage'
+import { WaterPage }             from '@/features/water/components/WaterPage'
+import { BillsPage }             from '@/features/bills/components/BillsPage'
+import { VehiclesPage }          from '@/features/vehicles/components/VehiclesPage'
+import { AppliancesPage }        from '@/features/appliances/components/AppliancesPage'
+import { HealthPage }            from '@/features/health/components/HealthPage'
+import { DocumentsPage }         from '@/features/documents/components/DocumentsPage'
+import { NotificationsPage }     from '@/features/notifications/components/NotificationsPage'
 
 export function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
         {/* Public routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login"           element={<LoginPage />} />
+        <Route path="/register"        element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/invite/accept" element={<AcceptInvitePage />} />
+        <Route path="/reset-password"  element={<ResetPasswordPage />} />
+        <Route path="/invite/accept"   element={<AcceptInvitePage />} />
 
         {/* Protected routes — all wrapped in AppShell */}
         <Route element={<ProtectedRoute />}>
           <Route element={<AppShell />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/dashboard"               element={<DashboardPage />} />
+            <Route path="/profile"                 element={<ProfilePage />} />
             <Route path="/profile/change-password" element={<ChangePasswordPage />} />
-            <Route path="/household/members" element={<MemberManagementPage />} />
+            <Route path="/household/members"        element={<MemberManagementPage />} />
 
             {/* ✅ Module 3 — Expenses */}
-            <Route path="/expenses" element={<ExpensesPage />} />
-
-            {/* Coming Soon modules */}
-            <Route path="/inventory"    element={<ComingSoonPage title="Grocery Inventory"  description="Manage pantry stock levels and get low-stock alerts."            icon={ShoppingBasket} />} />
-            <Route path="/gas"          element={<ComingSoonPage title="Gas Cylinder"       description="Track refills, vendor prices and predict next refill date."      icon={Flame} />} />
-            <Route path="/water"        element={<ComingSoonPage title="Water Can"          description="Log deliveries and estimate remaining stock."                    icon={Droplets} />} />
-            <Route path="/bills"        element={<ComingSoonPage title="Bill Manager"       description="Track electricity, internet, subscriptions and due dates."       icon={FileText} />} />
-            <Route path="/vehicles"     element={<ComingSoonPage title="Vehicles"           description="Insurance, PUC expiry, service history and reminders."          icon={Car} />} />
-            <Route path="/appliances"   element={<ComingSoonPage title="Appliances"         description="Warranty tracking, invoices and service history."                icon={Wrench} />} />
-            <Route path="/health"       element={<ComingSoonPage title="Health Reminders"   description="Medicine schedules, vaccinations and doctor visits."             icon={HeartPulse} />} />
-            <Route path="/documents"    element={<ComingSoonPage title="Document Vault"     description="Aadhaar, PAN, insurance and property documents."                 icon={FolderLock} />} />
-            <Route path="/notifications" element={<ComingSoonPage title="Notifications"    description="View all your alerts and reminders in one place."                icon={Bell} />} />
+            <Route path="/expenses"      element={<ExpensesPage />} />
+            {/* ✅ Module 4 — Grocery Inventory */}
+            <Route path="/inventory"     element={<InventoryPage />} />
+            {/* ✅ Module 5 — Gas Cylinder */}
+            <Route path="/gas"           element={<GasPage />} />
+            {/* ✅ Module 6 — Water Can */}
+            <Route path="/water"         element={<WaterPage />} />
+            {/* ✅ Module 7 — Bill Manager */}
+            <Route path="/bills"         element={<BillsPage />} />
+            {/* ✅ Module 8 — Vehicles */}
+            <Route path="/vehicles"      element={<VehiclesPage />} />
+            {/* ✅ Module 9 — Appliances */}
+            <Route path="/appliances"    element={<AppliancesPage />} />
+            {/* ✅ Module 10 — Health */}
+            <Route path="/health"        element={<HealthPage />} />
+            {/* ✅ Module 11 — Document Vault */}
+            <Route path="/documents"     element={<DocumentsPage />} />
+            {/* ✅ Module 12 — Notifications */}
+            <Route path="/notifications" element={<NotificationsPage />} />
           </Route>
         </Route>
 
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </BrowserRouter>
-  )
-}
-
-export function AppRouter() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/invite/accept" element={<AcceptInvitePage />} />
-
-        {/* Protected routes — all wrapped in AppShell */}
-        <Route element={<ProtectedRoute />}>
-          <Route element={<AppShell />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/profile/change-password" element={<ChangePasswordPage />} />
-            <Route path="/household/members" element={<MemberManagementPage />} />
-
-            {/* Modules — Coming Soon placeholders until implemented */}
-            <Route path="/expenses" element={<ComingSoonPage title="Expenses" description="Track monthly household expenses by category." icon={IndianRupee} />} />
-            <Route path="/inventory" element={<ComingSoonPage title="Grocery Inventory" description="Manage pantry stock levels and get low-stock alerts." icon={ShoppingBasket} />} />
-            <Route path="/gas" element={<ComingSoonPage title="Gas Cylinder" description="Track refills, vendor prices and predict next refill date." icon={Flame} />} />
-            <Route path="/water" element={<ComingSoonPage title="Water Can" description="Log deliveries and estimate remaining stock." icon={Droplets} />} />
-            <Route path="/bills" element={<ComingSoonPage title="Bill Manager" description="Track electricity, internet, subscriptions and due dates." icon={FileText} />} />
-            <Route path="/vehicles" element={<ComingSoonPage title="Vehicles" description="Insurance, PUC expiry, service history and reminders." icon={Car} />} />
-            <Route path="/appliances" element={<ComingSoonPage title="Appliances" description="Warranty tracking, invoices and service history." icon={Wrench} />} />
-            <Route path="/health" element={<ComingSoonPage title="Health Reminders" description="Medicine schedules, vaccinations and doctor visits." icon={HeartPulse} />} />
-            <Route path="/documents" element={<ComingSoonPage title="Document Vault" description="Aadhaar, PAN, insurance and property documents." icon={FolderLock} />} />
-            <Route path="/notifications" element={<ComingSoonPage title="Notifications" description="View all your alerts and reminders in one place." icon={Bell} />} />
-          </Route>
-        </Route>
-
-        {/* Default redirect */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>

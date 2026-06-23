@@ -1,6 +1,8 @@
 import { useAuth } from '@/features/auth/hooks/use-auth-context'
 import { useQuery } from '@tanstack/react-query'
 import { getExpenseSummary } from '@/features/expenses/services/expense.service'
+import { getInventorySummary } from '@/features/inventory/services/inventory.service'
+import { getBillsSummary } from '@/features/bills/services/bills.service'
 import {
   IndianRupee, ShoppingBasket, Flame, Droplets, FileText,
   Car, Wrench, HeartPulse, FolderLock, Bell, TrendingUp,
@@ -186,7 +188,21 @@ export function DashboardPage() {
     enabled: !!hId,
   })
 
-  const totalExpenses = summary?.total ?? 0
+  const { data: invSummary } = useQuery({
+    queryKey: ['inventory-summary', hId],
+    queryFn: () => getInventorySummary(hId),
+    enabled: !!hId,
+  })
+
+  const { data: billsSummary } = useQuery({
+    queryKey: ['bills-summary', hId],
+    queryFn: () => getBillsSummary(hId),
+    enabled: !!hId,
+  })
+
+  const totalExpenses  = summary?.total ?? 0
+  const lowStockCount  = invSummary?.low_stock_count ?? 0
+  const billsDue       = (billsSummary?.due_in_30_days ?? 0) + (billsSummary?.overdue ?? 0)
   const fmtAmount = (n: number) =>
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n)
 
@@ -237,15 +253,15 @@ export function DashboardPage() {
           <StatCard
             icon={AlertTriangle}
             label="Low Stock"
-            value="0"
-            sub="All items OK"
+            value={String(lowStockCount)}
+            sub={lowStockCount > 0 ? 'Items need restocking' : 'All items OK'}
             color="bg-amber-500"
           />
           <StatCard
             icon={Clock}
             label="Bills Due"
-            value="0"
-            sub="Next 30 days"
+            value={String(billsDue)}
+            sub={billsDue > 0 ? `${billsSummary?.overdue ?? 0} overdue` : 'Next 30 days'}
             color="bg-purple-500"
           />
           <StatCard
