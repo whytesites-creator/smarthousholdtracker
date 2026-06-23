@@ -38,14 +38,24 @@ export function HouseholdSwitcher() {
 
   const onCreateHousehold = async (values: CreateHouseholdInput) => {
     try {
-      await createHousehold(values)
+      const newHousehold = await createHousehold(values)
       await refreshHouseholds()
+      // Auto-activate the newly created household
+      if (newHousehold?.id) {
+        setActiveHousehold(newHousehold)
+      }
       reset()
       setShowCreate(false)
-      toast({ title: 'Household created!', description: `"${values.name}" is ready.` })
+      toast({ title: 'Household created! 🏠', description: `"${values.name}" is now active.` })
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Could not create household.'
-      toast({ variant: 'destructive', title: 'Error', description: message })
+      // Distinguish timeout from other errors
+      const isTimeout = err instanceof Error && (
+        err.message.includes('timeout') || err.message.includes('ECONNABORTED')
+      )
+      const message = isTimeout
+        ? 'Request timed out. The server may be starting up — please try again.'
+        : (err instanceof Error ? err.message : 'Could not create household.')
+      toast({ variant: 'destructive', title: isTimeout ? 'Request Timed Out' : 'Error', description: message })
     }
   }
 

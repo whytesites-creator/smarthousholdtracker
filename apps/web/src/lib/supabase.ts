@@ -12,6 +12,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
+    storageKey: 'sht:session',   // scoped key so other apps never collide
+    storage: window.localStorage, // explicit — survives tab/browser restarts
   },
 })
-

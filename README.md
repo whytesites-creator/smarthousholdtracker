@@ -164,6 +164,7 @@ smarthousholdtracker/
       preview.yml         Preview deploy (pull requests)
   docs/
     PRD.md                Product Requirements Document
+    MODULE_USAGE_FAMILY_SAMPLE.md  Family module guide with sample data
     TDD.md                Technical Design Document
 ```
 
